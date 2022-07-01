@@ -2,7 +2,7 @@
 *Multi-domain Sentiment Analysis using Natural Language Processing techniques.*
 
 ## Abstract
-This is a sentiment analysis model aimed at determining whether a product review is positive or negative using natural language processing techniques. The model was built with a Long-Short Term Memory neural network and scored 77% accuracy on test data.
+This is a sentiment analysis model aimed at determining whether a product review is positive or negative using natural language processing techniques. The model was built with a Long-Short Term Memory recurrent neural network and scored 77% accuracy on test data.
 ## Dataset
 The dataset used is the [Multi-Domain Sentiment Dataset](https://www.cs.jhu.edu/~mdredze/datasets/sentiment/index2.html) provided by Mark Dredze and John Blitzer.
 The Multi-Domain Sentiment Dataset contains product reviews taken from Amazon.com from 4 product types (domains): Kitchen, Books, DVDs, and Electronics. Each domain has two thousand reviews in total.
