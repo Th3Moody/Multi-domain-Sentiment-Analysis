@@ -5,7 +5,7 @@
 This is a sentiment analysis model aimed at determining whether a product review is positive or negative using natural language processing techniques. The model was built with a Long-Short Term Memory neural network and scored 77% accuracy on test data.
 ## Dataset
 The dataset used is the [Multi-Domain Sentiment Dataset](https://www.cs.jhu.edu/~mdredze/datasets/sentiment/index2.html) provided by Mark Dredze and John Blitzer.
-The Multi-Domain Sentiment Dataset contains product reviews taken from Amazon.com from 4 product types (domains): Kitchen, Books, DVDs, and Electronics. Each domain has several thousand reviews, but the exact number varies by domain.
+The Multi-Domain Sentiment Dataset contains product reviews taken from Amazon.com from 4 product types (domains): Kitchen, Books, DVDs, and Electronics. Each domain has two thousand reviews in total.
 
 The dataset split the reviews in 4 different folders (folder for each domain) and each folder contained positive reviews file, negative reviews file, and an optional unlabeled reviews file. Each file contains a pseudo-XML scheme for encoding the reviews.
 
@@ -49,3 +49,21 @@ A negative review example:
   </review_text>
 </review>
 ```
+
+## Cleaning
+The reading process started and only the review text was taken into consideration. Regular expressions were used to extract the review text from files.
+```python
+# Regex for reviews extraction
+regex_review = re.compile("<review_text>.+?<\/review_text>", flags=re.DOTALL)
+```
+**Cleaning process included:**
+-	Removing the `<review_text>` tags
+-	Normalizing letter case
+-	Removing URLs and email addresses
+-	Removing Punctuation
+-	Fixed some offensive words that were altered with symbols to avoid being detected (They are important in our analysis)
+
+## Looking for useful insights
+Three domains (books, DVD, and electronics) were taken as training data and the last domain (kitchen & housewares) was used for testing. We had 6,000 training reviews in total, split into 50% positive reviews and 50% negative reviews which makes the data perfectly balanced.
+I found that that longest review was 1,942 words which is very large for an LSTM network to handle. While most reviews (76.9%) are 100 words or less. I decided to go with a sequence size of 125 words for the LSTM network. (Decision was taken according to weighted mean and neglecting reviews above 300 words)
+
