@@ -61,6 +61,7 @@ regex_review = re.compile("<review_text>.+?<\/review_text>", flags=re.DOTALL)
 -	Normalizing letter case
 -	Removing URLs and email addresses
 -	Removing Punctuation
+-	Removing stop words
 -	Fixed some offensive words that were altered with symbols to avoid being detected (They are important in our analysis)
 
 ## Looking for useful insights
@@ -73,3 +74,60 @@ I found that that longest review was 1,942 words which is very large for an LSTM
 ## The Model
 The model consists of 1 embedding layer, 2 LSTM layers, and 1 output dense layer. For the embedding layer, I used weights from [GloVe Twitter](https://nlp.stanford.edu/projects/glove/) (200d) model to obtain vector representations for words to be feed to the neural network.
 
+The reason for choosing the GloVe Twitter model is that it is trained on informal, slang, spoken English (aka colloquial English) which would be very helpful in our case where reviews could be grammatically incorrect, or include misspelled words.
+
+The model scored 89.6% accuracy on train data, 78.7% on validation data, and 77% on test data. Check model summary below:
+
+```
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ embedding (Embedding)       (None, 125, 200)          8593600   
+                                                                 
+ lstm (LSTM)                 (None, 125, 30)           27720     
+                                                                 
+ lstm_1 (LSTM)               (None, 30)                7320      
+                                                                 
+ dense (Dense)               (None, 1)                 31        
+                                                                 
+=================================================================
+Total params: 8,628,671
+Trainable params: 35,071
+Non-trainable params: 8,593,600
+```
+
+## Examples
+```python
+# Straight forward positive
+lstm_predict("I really recommend this book")
+```
+```
+output: Positive Review
+```
+
+```python
+# Tricky positive
+lstm_predict("The dvd included a big poster of my favorite hero. I just can't wait for the second episode")
+```
+```
+output: Positive Review
+```
+
+```python
+# Straight forward negative
+lstm_predict("I don't know what the hell did i just read, the book is full nonsense")
+```
+```
+output: Negative Review
+```
+
+```python
+# Tricky negative
+lstm_predict("The book is very huge with too much unnecessary details that could have been omitted. Just buy another book!")
+```
+```
+output: Negative Review
+```
+
+---
+**Tags:** *Python, Scikit Learn, NLTK, Gensim, NLP, LSTM, RNN, NN, TensorFlow, Regex, Word Embeddings, Word2Vec*
