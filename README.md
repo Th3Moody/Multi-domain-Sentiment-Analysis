@@ -65,5 +65,11 @@ regex_review = re.compile("<review_text>.+?<\/review_text>", flags=re.DOTALL)
 
 ## Looking for useful insights
 Three domains (books, DVD, and electronics) were taken as training data and the last domain (kitchen & housewares) was used for testing. We had 6,000 training reviews in total, split into 50% positive reviews and 50% negative reviews which makes the data perfectly balanced.
+
+![Count of words in reviews Histogram](/words-stat.jpg)Count of words in reviews Histogram with 20 words bin size except the last bin 300-2000
+
 I found that that longest review was 1,942 words which is very large for an LSTM network to handle. While most reviews (76.9%) are 100 words or less. I decided to go with a sequence size of 125 words for the LSTM network. (Decision was taken according to weighted mean and neglecting reviews above 300 words)
+
+## The Model
+The model consists of 1 embedding layer, 2 LSTM layers, and 1 output dense layer. For the embedding layer, I used weights from [GloVe Twitter](https://nlp.stanford.edu/projects/glove/) (200d) model to obtain vector representations for words to be feed to the neural network.
 
